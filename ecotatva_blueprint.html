@@ -1,0 +1,1661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EcoTatva – Complete Technical Blueprint</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+  :root {
+    --green-50: #eef9f3; --green-200: #9de8bc; --green-400: #3dc97d; --green-600: #1a9b58; --green-800: #0d5c34; --green-900: #07351e;
+    --teal-50: #eaf8f5; --teal-400: #2cc9aa; --teal-600: #0f8a76; --teal-800: #065248;
+    --amber-100: #fef0c7; --amber-400: #f59e0b; --amber-600: #d97706; --amber-800: #92400e;
+    --blue-50: #eff6ff; --blue-400: #3b82f6; --blue-600: #2563eb; --blue-800: #1e40af;
+    --coral-50: #fff1ee; --coral-400: #f26b4e; --coral-600: #dc4426; --coral-800: #9a2b14;
+    --gray-50: #f9fafb; --gray-100: #f3f4f6; --gray-200: #e5e7eb; --gray-400: #9ca3af; --gray-600: #4b5563; --gray-800: #1f2937; --gray-900: #111827;
+    --text: #111827; --text-muted: #6b7280; --text-light: #9ca3af;
+    --border: #e5e7eb; --surface: #ffffff; --bg: #f8fdf9;
+    --font-main: 'Plus Jakarta Sans', system-ui, sans-serif;
+    --font-mono: 'DM Mono', monospace;
+    --font-display: 'Fraunces', Georgia, serif;
+    --radius: 8px; --radius-lg: 14px; --radius-xl: 20px;
+    --shadow: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+    --shadow-md: 0 4px 16px rgba(0,0,0,.07);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-main); background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.7; }
+
+  /* NAV */
+  nav { background: #fff; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; padding: 0 2rem; display: flex; align-items: center; gap: 1.5rem; height: 56px; }
+  .nav-logo { font-family: var(--font-display); font-size: 20px; font-weight: 700; color: var(--green-600); display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+  .nav-logo span { font-size: 20px; }
+  nav ul { display: flex; gap: 4px; list-style: none; overflow-x: auto; flex: 1; }
+  nav ul li a { display: block; padding: 6px 10px; font-size: 12px; font-weight: 500; color: var(--text-muted); text-decoration: none; border-radius: 6px; white-space: nowrap; transition: all .15s; }
+  nav ul li a:hover, nav ul li a.active { background: var(--green-50); color: var(--green-600); }
+
+  /* LAYOUT */
+  main { max-width: 960px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
+  .hero { background: linear-gradient(135deg, var(--green-800) 0%, #0d6b3e 60%, #1a5c6a 100%); color: white; border-radius: var(--radius-xl); padding: 3rem 2.5rem; margin-bottom: 3rem; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; inset: 0; background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); pointer-events: none; }
+  .hero-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.2); border-radius: 99px; padding: 4px 14px; font-size: 12px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; margin-bottom: 1rem; }
+  .hero h1 { font-family: var(--font-display); font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; line-height: 1.1; margin-bottom: .75rem; }
+  .hero p { font-size: 16px; opacity: .85; max-width: 560px; margin-bottom: 1.5rem; }
+  .hero-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+  .hero-pill { background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.18); border-radius: 99px; padding: 5px 14px; font-size: 12px; font-weight: 500; }
+  .hero-emoji { position: absolute; right: 2.5rem; top: 50%; transform: translateY(-50%); font-size: 8rem; opacity: .15; pointer-events: none; }
+
+  /* SECTIONS */
+  section { margin-bottom: 3.5rem; scroll-margin-top: 70px; }
+  .section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 2px solid var(--green-50); }
+  .section-num { background: var(--green-600); color: white; font-family: var(--font-mono); font-size: 11px; font-weight: 500; border-radius: 6px; padding: 4px 8px; min-width: 32px; text-align: center; }
+  .section-header h2 { font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; color: var(--gray-900); }
+
+  /* CARDS */
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.25rem 1.5rem; box-shadow: var(--shadow); margin-bottom: 1rem; }
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; }
+  .card h3 { font-size: 14px; font-weight: 600; color: var(--green-700, #166534); margin-bottom: .5rem; }
+  .card p, .card li { font-size: 13.5px; color: var(--text-muted); }
+  .card ul { padding-left: 1.1rem; }
+  .card ul li { margin-bottom: 3px; }
+
+  /* TAG */
+  .tag { display: inline-flex; align-items: center; gap: 4px; background: var(--green-50); border: 1px solid var(--green-200); color: var(--green-800); border-radius: 99px; padding: 2px 10px; font-size: 11px; font-weight: 600; }
+  .tag.amber { background: var(--amber-100); border-color: #fcd34d; color: var(--amber-800); }
+  .tag.blue { background: var(--blue-50); border-color: #bfdbfe; color: var(--blue-800); }
+  .tag.coral { background: var(--coral-50); border-color: #fed7cc; color: var(--coral-800); }
+
+  /* CODE */
+  pre { background: var(--gray-900); color: #e2e8f0; border-radius: var(--radius); padding: 1rem 1.25rem; font-family: var(--font-mono); font-size: 12px; line-height: 1.7; overflow-x: auto; margin: .75rem 0; }
+  code { font-family: var(--font-mono); font-size: 12.5px; background: var(--gray-100); color: var(--coral-600); padding: 1px 5px; border-radius: 4px; }
+
+  /* TABLE */
+  .table-wrap { overflow-x: auto; border-radius: var(--radius-lg); border: 1px solid var(--border); margin: 1rem 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { background: var(--green-50); color: var(--green-800); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); }
+  td { padding: 9px 14px; border-bottom: 1px solid var(--gray-100); color: var(--text-muted); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--gray-50); }
+
+  /* FLOW */
+  .flow { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 1rem 0; }
+  .flow-step { background: var(--green-50); border: 1.5px solid var(--green-200); border-radius: var(--radius); padding: 8px 16px; font-size: 13px; font-weight: 600; color: var(--green-800); }
+  .flow-arrow { color: var(--green-400); font-size: 18px; font-weight: 700; }
+
+  /* ROLE CARD */
+  .role-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.25rem; }
+  .role-header { display: flex; align-items: center; gap: 10px; margin-bottom: .75rem; }
+  .role-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; }
+  .role-name { font-weight: 700; font-size: 14px; }
+  .role-title { font-size: 12px; color: var(--text-muted); }
+  .role-card ul { padding-left: 1.1rem; }
+  .role-card li { font-size: 13px; color: var(--text-muted); margin-bottom: 4px; }
+
+  /* ROADMAP */
+  .roadmap-day { border-left: 3px solid var(--green-400); padding-left: 1rem; margin-bottom: 1.25rem; }
+  .roadmap-day h4 { font-size: 14px; font-weight: 700; color: var(--gray-800); margin-bottom: 4px; }
+  .roadmap-day p { font-size: 13px; color: var(--text-muted); }
+  .roadmap-day .tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+
+  /* RISK */
+  .risk-row { border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 1rem; }
+  .risk-header { display: flex; align-items: center; gap: 12px; padding: .8rem 1.2rem; background: var(--gray-50); border-bottom: 1px solid var(--border); cursor: pointer; }
+  .risk-level { padding: 3px 10px; border-radius: 99px; font-size: 11px; font-weight: 700; }
+  .risk-level.high { background: #fee2e2; color: #991b1b; }
+  .risk-level.med { background: var(--amber-100); color: var(--amber-800); }
+  .risk-level.low { background: var(--green-50); color: var(--green-800); }
+  .risk-body { padding: 1rem 1.2rem; display: none; }
+  .risk-row.open .risk-body { display: block; }
+  .risk-body ol { padding-left: 1.2rem; }
+  .risk-body li { font-size: 13px; color: var(--text-muted); margin-bottom: 8px; }
+
+  /* GEMINI PROMPT BOX */
+  .prompt-box { background: var(--gray-900); border-radius: var(--radius-lg); padding: 1.25rem; position: relative; margin: .75rem 0; }
+  .prompt-label { font-family: var(--font-mono); font-size: 10px; color: var(--green-400); font-weight: 600; letter-spacing: .1em; text-transform: uppercase; margin-bottom: .5rem; }
+  .prompt-text { font-family: var(--font-mono); font-size: 12px; color: #e2e8f0; line-height: 1.8; white-space: pre-wrap; }
+  .copy-btn { position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.15); border-radius: 6px; padding: 4px 10px; color: #9ca3af; font-size: 11px; cursor: pointer; transition: all .15s; }
+  .copy-btn:hover { background: rgba(255,255,255,.18); color: white; }
+
+  /* ACCORDION */
+  .accord { border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: .75rem; }
+  .accord-head { display: flex; align-items: center; justify-content: space-between; padding: .9rem 1.2rem; cursor: pointer; font-weight: 600; font-size: 14px; background: var(--gray-50); border-bottom: 1px solid transparent; transition: background .15s; }
+  .accord-head:hover { background: var(--green-50); }
+  .accord.open .accord-head { border-bottom-color: var(--border); }
+  .accord-body { padding: 1rem 1.2rem; display: none; }
+  .accord.open .accord-body { display: block; }
+  .accord-icon { transition: transform .2s; font-size: 16px; }
+  .accord.open .accord-icon { transform: rotate(90deg); }
+
+  /* POINTS TABLE */
+  .points-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: .75rem; }
+  .points-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem; text-align: center; }
+  .points-val { font-family: var(--font-display); font-size: 2rem; font-weight: 700; color: var(--green-600); line-height: 1; }
+  .points-label { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+
+  /* JUDGE SLIDE */
+  .slide { background: var(--gray-900); color: white; border-radius: var(--radius-lg); padding: 2rem; margin-bottom: 1rem; position: relative; overflow: hidden; }
+  .slide-num { position: absolute; top: 1rem; right: 1.25rem; font-family: var(--font-mono); font-size: 12px; color: rgba(255,255,255,.35); }
+  .slide h3 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; margin-bottom: .5rem; color: var(--green-400, #4ade80); }
+  .slide p, .slide li { font-size: 13px; color: rgba(255,255,255,.75); }
+  .slide ul { padding-left: 1.1rem; }
+  .slide li { margin-bottom: 4px; }
+
+  /* UTIL */
+  .flex-gap { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .mt { margin-top: 1rem; }
+  .mb { margin-bottom: 1rem; }
+  .note { background: #fffbeb; border-left: 3px solid var(--amber-400); border-radius: 0 var(--radius) var(--radius) 0; padding: .75rem 1rem; font-size: 13px; color: #92400e; margin: .75rem 0; }
+  h3.sub { font-size: 15px; font-weight: 700; color: var(--gray-800); margin: 1.25rem 0 .5rem; }
+  p.body { font-size: 14px; color: var(--text-muted); margin-bottom: .75rem; }
+
+  @media (max-width: 600px) {
+    nav ul { display: none; }
+    .hero { padding: 2rem 1.25rem; }
+    .hero-emoji { display: none; }
+    main { padding: 1.5rem 1rem 4rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo"><span>🌿</span> EcoTatva</div>
+  <ul>
+    <li><a href="#s1">User Flow</a></li>
+    <li><a href="#s2">Architecture</a></li>
+    <li><a href="#s3">Stack</a></li>
+    <li><a href="#s4">Database</a></li>
+    <li><a href="#s5">API</a></li>
+    <li><a href="#s6">Frontend</a></li>
+    <li><a href="#s7">Backend</a></li>
+    <li><a href="#s8">Rewards</a></li>
+    <li><a href="#s9">Tasks</a></li>
+    <li><a href="#s10">Gemini AI</a></li>
+    <li><a href="#s11">Mini Game</a></li>
+    <li><a href="#s12">Security</a></li>
+    <li><a href="#s13">Deploy</a></li>
+    <li><a href="#s14">Roadmap</a></li>
+    <li><a href="#s15">MVP Scope</a></li>
+    <li><a href="#s16">Judge Strategy</a></li>
+    <li><a href="#s17">Risks</a></li>
+    <li><a href="#s18">Code Order</a></li>
+  </ul>
+</nav>
+
+<main>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">🏆 GDG Solution Challenge 2026</div>
+  <h1>EcoTatva<br>Blueprint</h1>
+  <p>Complete technical architecture for a gamified environmental education app — ready to hand to your dev team and Gemini for code generation.</p>
+  <div class="hero-pills">
+    <div class="hero-pill">Flutter / React</div>
+    <div class="hero-pill">FastAPI + Firebase</div>
+    <div class="hero-pill">Gemini 1.5 Flash</div>
+    <div class="hero-pill">4-member team · 10 days</div>
+  </div>
+  <div class="hero-emoji">🌍</div>
+</div>
+
+<!-- SECTION 1: USER FLOW -->
+<section id="s1">
+  <div class="section-header">
+    <div class="section-num">01</div>
+    <h2>Product Breakdown & User Flow</h2>
+  </div>
+
+  <h3 class="sub">Core User Loop (Non-Negotiable)</h3>
+  <div class="flow">
+    <div class="flow-step">🎯 Learn</div><div class="flow-arrow">→</div>
+    <div class="flow-step">✅ Do Task</div><div class="flow-arrow">→</div>
+    <div class="flow-step">⭐ Earn XP</div><div class="flow-arrow">→</div>
+    <div class="flow-step">🏅 Unlock Badge</div><div class="flow-arrow">→</div>
+    <div class="flow-step">📊 Leaderboard</div><div class="flow-arrow">→</div>
+    <div class="flow-step">🔄 Return Daily</div>
+  </div>
+
+  <h3 class="sub mt">Global UI Shell (Applies to All Screens)</h3>
+  <div class="card-grid">
+    <div class="card" style="border-color:var(--green-200);">
+      <h3>🗂️ Left Sidebar Navigation</h3>
+      <ul>
+        <li>Fixed vertical sidebar with EcoTatva logo + leaf icon at top</li>
+        <li>Icon + label nav items: Dashboard, Tasks, Learn, Games, Leaderboard, Community, Events, Articles, Badges, Profile, EcoBot, Settings</li>
+        <li>Active state: filled green background pill with white text + icon</li>
+        <li>Inactive state: muted icon + text, hover shows light green tint</li>
+        <li>Bottom of sidebar: user avatar thumbnail + display name + rank badge</li>
+      </ul>
+    </div>
+    <div class="card" style="border-color:var(--green-200);">
+      <h3>🔝 Top Header Bar</h3>
+      <ul>
+        <li>Stretches full content-area width across every page</li>
+        <li>Left: page title (e.g. "Dashboard", "Community")</li>
+        <li>Centre: Search bar with placeholder "Search EcoTatva…"</li>
+        <li>Right pills (left → right): ⚡ XP count (green pill) · 🔥 Streak count (amber pill) · 🔔 Notification bell (with badge dot) · 👤 User avatar (circle, opens profile menu)</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 class="sub mt">Screen-by-Screen User Journeys</h3>
+  <div class="card-grid">
+    <div class="card">
+      <h3>🆕 New User Onboarding</h3>
+      <ul>
+        <li>Lands on full-screen splash with EcoTatva logo + leaf animation</li>
+        <li>Google / Email sign-in via Firebase Auth</li>
+        <li>Picks mode: Kids (6–12) or Teen / Adult (large illustrated cards)</li>
+        <li>Sets display name + picks avatar from preset eco-themed set</li>
+        <li>Short 3-slide animated intro explaining XP, streaks & tasks</li>
+        <li>Lands on Dashboard — sidebar visible, top header active</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>🏠 Dashboard (Home)</h3>
+      <ul>
+        <li>4 metric cards in a row: <strong>Total XP · Current Streak · CO₂ Saved · Tasks Completed</strong></li>
+        <li>Each card has a large colored icon, number, label, and a small trend arrow</li>
+        <li>Below: "Today's Tasks" section — 3 task cards with category icon, title, XP reward chip, and "Complete" button</li>
+        <li>Sidebar active state highlights "Dashboard"</li>
+        <li>Top header shows live XP and streak values</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>✅ Tasks Page</h3>
+      <ul>
+        <li>Header: "Your Eco Tasks" with date badge</li>
+        <li>3 AI-personalized task cards — each shows: emoji icon, task title, short description, difficulty chip (Easy/Medium/Hard), XP reward, and a "Mark Complete" button</li>
+        <li>Completed tasks show green checkmark overlay + strikethrough</li>
+        <li>Text proof submission inline in card (expandable textarea)</li>
+        <li>Gemini validation feedback shown as a green banner after submit</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>📚 Learn Page</h3>
+      <ul>
+        <li>Featured lesson banner at top (large card with gradient + topic image)</li>
+        <li>Category grid below: Waste Management · Water Conservation · Energy Saving (each as a colored card with icon and lesson count badge)</li>
+        <li>Tapping a category opens lesson list; tapping a lesson opens full content + 5-question Gemini quiz</li>
+        <li>Quiz result screen shows score ring, correct/wrong breakdown, XP earned</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>🏆 Leaderboard Page</h3>
+      <ul>
+        <li>Top section: <strong>Podium display</strong> — 2nd place (left, silver), 1st place (centre, elevated gold), 3rd place (right, bronze); each shows avatar, name, and XP total</li>
+        <li>Below podium: scrollable ranked table with rank number, avatar, name, XP, streak, rank badge</li>
+        <li>Toggle tabs: Global / Local (city-level)</li>
+        <li>Current user row highlighted in light green</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>🤝 Community Feed</h3>
+      <ul>
+        <li>Feed of user achievement posts with avatar, display name, timestamp</li>
+        <li>Posts can include: task completion, badge unlock, game score, or free-text eco update</li>
+        <li>Optional image attachment visible in feed card</li>
+        <li>Like ❤️ count, 💬 comment count, hashtag chips (#WasteWarrior, #EcoTatva)</li>
+        <li>Floating "+" button → Create Post modal (text + optional image + hashtag picker)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>📅 Events Page</h3>
+      <ul>
+        <li>Grid of event cards — each shows: cover image, event title, date + time, location tag, organiser name</li>
+        <li>Green "Join Event" button on each card</li>
+        <li>Filter tabs: Upcoming · Nearby · Online</li>
+        <li>Joined events show a "Joined ✓" badge replacing the button</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>📰 Articles & Updates</h3>
+      <ul>
+        <li>Curated eco-news and sustainability articles with thumbnail, title, source tag, and read-time chip</li>
+        <li>Category filter tabs: All · Waste · Water · Energy · Climate</li>
+        <li>Tapping an article opens full-read view inside app</li>
+        <li>Bookmark icon saves articles to profile reading list</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>🏅 Badges Page</h3>
+      <ul>
+        <li>Grid of badge cards — earned badges show full colour + unlock date; locked badges shown as desaturated with a lock icon overlay</li>
+        <li>Each badge card has a circular progress ring showing progress toward unlock</li>
+        <li>Categories: Streak Badges · Task Badges · Quiz Badges · Game Badges · Special</li>
+        <li>Tapping a badge shows modal: name, description, criteria, how close user is to earning it</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>👤 Profile Page</h3>
+      <ul>
+        <li>Top section: avatar (large), display name, rank badge, location tag, "Edit Profile" button</li>
+        <li>Stats row: Total XP · Longest Streak · Tasks Done · Badges Earned</li>
+        <li>Recent Activity timeline: last 5 completed tasks / earned badges with timestamps</li>
+        <li>Achievements section: pinned top badges shown as icon strip</li>
+        <li>Account mode indicator (Kids / Adult) with toggle option</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>🤖 EcoBot Chatbot</h3>
+      <ul>
+        <li>Full chat interface: message bubbles (user right, EcoBot left with leaf avatar)</li>
+        <li>EcoBot powered by Gemini — answers eco questions, gives task hints, explains quiz answers</li>
+        <li>Quick-reply chips at bottom: "What's my streak?", "Give me a task hint", "Today's eco tip"</li>
+        <li>Text input bar + send button at bottom</li>
+        <li>Chat history preserved per session in Firestore</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>⚙️ Settings Page</h3>
+      <ul>
+        <li>Sections: Account · Notifications · Appearance · Privacy · About</li>
+        <li>Account: edit name, avatar, age group, location, Kids/Adult mode toggle</li>
+        <li>Notifications: toggle push alerts for daily tasks, streak reminders, community likes</li>
+        <li>Appearance: light / dark mode toggle (follows system by default)</li>
+        <li>Privacy: view privacy policy, delete account + all data button (with confirmation)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>🎮 Mini Game</h3>
+      <ul>
+        <li>Goes to Games tab via sidebar</li>
+        <li>Plays Smart Waste Sorting — items fall from top of screen</li>
+        <li>Drags items into correct coloured bin (Dry / Wet / Hazardous / E-Waste)</li>
+        <li>60-second countdown timer adds urgency; speed increases with level</li>
+        <li>3 strikes = game over screen with score, XP earned, personal best indicator</li>
+        <li>"Share to Community" button auto-creates a feed post with score</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 2: ARCHITECTURE -->
+<section id="s2">
+  <div class="section-header">
+    <div class="section-num">02</div>
+    <h2>System Architecture Diagram</h2>
+  </div>
+  <div class="card">
+    <pre style="font-size:11px; line-height:1.6;">
+┌──────────────────────────────────────────────────────────────────────┐
+│                          CLIENT LAYER                                │
+│                                                                      │
+│  ┌─────────────────┐   ┌───────────────────┐   ┌─────────────────┐  │
+│  │   Flutter App   │   │  React Web App    │   │  PWA (mobile)   │  │
+│  │ (iOS / Android) │   │  (Vite + Vercel)  │   │                 │  │
+│  └────────┬────────┘   └────────┬──────────┘   └────────┬────────┘  │
+└───────────┼─────────────────────┼──────────────────────-┼───────────┘
+            │                     │                        │
+            └──────────────┬──────┘──────────────-─────────┘
+                           │  HTTPS / REST
+┌──────────────────────────▼───────────────────────────────────────────┐
+│                         BACKEND LAYER                                │
+│                                                                      │
+│  ┌──────────────────────────────────────────────────────────────┐    │
+│  │                 FastAPI (Python) or Express.js                │    │
+│  │  Hosted on Render.com (free tier) — auto-sleep disabled       │    │
+│  │                                                              │    │
+│  │  ┌──────────┐ ┌──────────┐ ┌────────────┐ ┌──────────────┐  │    │
+│  │  │  Auth    │ │  Tasks   │ │   Rewards  │ │   Education  │  │    │
+│  │  │ Service  │ │ Service  │ │   Engine   │ │   Service    │  │    │
+│  │  └──────────┘ └──────────┘ └────────────┘ └──────────────┘  │    │
+│  │  ┌──────────┐ ┌──────────┐ ┌────────────┐ ┌──────────────┐  │    │
+│  │  │ Leaderbd │ │  Game    │ │   Gemini   │ │   User       │  │    │
+│  │  │ Service  │ │ Service  │ │   Gateway  │ │   Profile    │  │    │
+│  │  └──────────┘ └──────────┘ └────────────┘ └──────────────┘  │    │
+│  └──────────────────────────────────────────────────────────────┘    │
+└───────┬──────────────────────┬────────────────────┬──────────────────┘
+        │                      │                    │
+        ▼                      ▼                    ▼
+┌──────────────┐   ┌────────────────────┐  ┌────────────────────┐
+│  Firebase    │   │   Gemini 1.5 Flash │  │  Firebase Storage  │
+│  Firestore   │   │   (Google AI API)  │  │  (photo proofs)    │
+│  (NoSQL DB)  │   │                   │  │                    │
+│  Firebase    │   │  Task generation  │  │  Max 5MB/file      │
+│  Auth        │   │  Quiz generation  │  │  30-day retention  │
+│  Firebase    │   │  Lesson summary   │  └────────────────────┘
+│  Functions   │   │  Feedback         │
+│  (scheduler) │   └────────────────────┘
+└──────────────┘
+
+DAILY TASK SCHEDULER:
+Firebase Cloud Function (cron) → runs at 00:00 IST daily
+→ Fetches all active users → Calls Gemini for task generation
+→ Writes tasks to Firestore under users/{uid}/tasks/{date}
+→ Sends FCM push notification "Your eco-tasks are ready!"
+    </pre>
+  </div>
+</section>
+
+<!-- SECTION 3: TECH STACK -->
+<section id="s3">
+  <div class="section-header">
+    <div class="section-num">03</div>
+    <h2>Best Tech Stack + Justification</h2>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Layer</th><th>Technology</th><th>Why</th><th>Free Tier</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Frontend</strong></td><td>React + Vite</td><td>Fast iteration, web-first for demo, Flutter for mobile later</td><td>✅ Vercel – unlimited free deploys</td></tr>
+        <tr><td><strong>Backend</strong></td><td>FastAPI (Python)</td><td>Clean async Python, great for AI integrations, Pydantic validation</td><td>✅ Render.com – 750 hrs/month free</td></tr>
+        <tr><td><strong>Database</strong></td><td>Firebase Firestore</td><td>Real-time sync, offline first, no schema migrations</td><td>✅ Spark plan – 1 GiB storage, 50k reads/day</td></tr>
+        <tr><td><strong>Auth</strong></td><td>Firebase Auth</td><td>Google Sign-In in 10 lines of code, no JWT server needed</td><td>✅ Free always</td></tr>
+        <tr><td><strong>AI</strong></td><td>Gemini 1.5 Flash</td><td>60 RPM free, 1M context, fast latency for quiz gen</td><td>✅ Free tier in AI Studio</td></tr>
+        <tr><td><strong>Storage</strong></td><td>Firebase Storage</td><td>Same SDK as Firestore, simple photo upload for task proof</td><td>✅ 5 GB free</td></tr>
+        <tr><td><strong>Scheduling</strong></td><td>Firebase Cloud Functions</td><td>Cron triggers built-in, no separate server needed</td><td>✅ 2M invocations/month free</td></tr>
+        <tr><td><strong>Push Notif</strong></td><td>Firebase Cloud Messaging</td><td>Cross-platform notifications, same SDK</td><td>✅ Free always</td></tr>
+        <tr><td><strong>CI/CD</strong></td><td>GitHub Actions</td><td>Auto-deploy to Vercel + Render on push to main</td><td>✅ 2000 min/month free</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note">💡 <strong>Hackathon tip:</strong> Never use paid tiers for MVP. All of the above works on free plans well within hackathon usage limits.</div>
+</section>
+
+<!-- SECTION 4: DATABASE -->
+<section id="s4">
+  <div class="section-header">
+    <div class="section-num">04</div>
+    <h2>Database Schema (Firestore Collections)</h2>
+  </div>
+  <div class="note">Firestore is a NoSQL document database. Each top-level item below is a <strong>Collection</strong>. Sub-items are <strong>Documents</strong> with the listed fields.</div>
+
+  <div class="accord open">
+    <div class="accord-head" onclick="toggleAccord(this)">👤 users <span class="accord-icon">›</span></div>
+    <div class="accord-body">
+      <pre>{
+  uid: string,               // Firebase UID (also the document ID)
+  email: string,
+  displayName: string,
+  photoURL: string,
+  mode: "kids" | "adult",    // UI mode
+  ageGroup: "6-8"|"9-12"|"13-17"|"18+",
+  location: { city, state, country },
+  totalPoints: number,       // running total
+  weeklyPoints: number,      // resets every Monday
+  currentStreak: number,     // consecutive days with ≥1 task done
+  longestStreak: number,
+  rank: string,              // "Seed"|"Sprout"|"Sapling"|"Tree"|"Forest Guardian"
+  badges: [{ id, name, earnedAt }],
+  preferredTopics: ["waste","water","energy"],
+  createdAt: Timestamp,
+  lastActiveAt: Timestamp,
+  fcmToken: string,          // for push notifications
+  isKidAccount: boolean,
+  parentEmail: string        // optional, for kids accounts
+}</pre>
+    </div>
+  </div>
+
+  <div class="accord">
+    <div class="accord-head" onclick="toggleAccord(this)">📅 tasks/{uid}/daily/{YYYY-MM-DD} <span class="accord-icon">›</span></div>
+    <div class="accord-body">
+      <pre>{
+  date: string,              // "2026-04-25"
+  tasks: [
+    {
+      taskId: string,        // uuid
+      title: string,         // "Save one bottle of water today"
+      description: string,
+      category: "waste"|"water"|"energy",
+      difficulty: "easy"|"medium"|"hard",
+      pointsReward: number,  // 10, 20, 30
+      isCompleted: boolean,
+      completedAt: Timestamp | null,
+      proofType: "text"|"photo"|"none",
+      proofUrl: string | null,
+      geminiValidated: boolean,
+      geminiScore: number,   // 0-100, confidence of validity
+      feedback: string       // Gemini's feedback message
+    }
+  ],
+  generatedByGemini: boolean,
+  generatedAt: Timestamp,
+  allCompleted: boolean,
+  bonusPointsAwarded: number // extra for completing all 3
+}</pre>
+    </div>
+  </div>
+
+  <div class="accord">
+    <div class="accord-head" onclick="toggleAccord(this)">📚 lessons <span class="accord-icon">›</span></div>
+    <div class="accord-body">
+      <pre>{
+  id: "waste-1" | "water-1" | "energy-1",  // etc.
+  topic: "waste" | "water" | "energy",
+  title: string,
+  summary: string,            // Gemini-generated 300-word summary
+  keyFacts: [string],         // 5 bullet facts (UN/IPCC sourced)
+  sources: [{ name, url }],
+  quiz: [
+    {
+      questionId: string,
+      question: string,
+      options: [string],       // A, B, C, D
+      correctIndex: number,
+      explanation: string
+    }
+  ],
+  difficulty: "beginner"|"intermediate",
+  ageGroup: "all"|"kids"|"adult",
+  pointsForCompletion: number,
+  bonusForPerfect: number,
+  createdAt: Timestamp,
+  lastRefreshedAt: Timestamp  // Gemini refreshes weekly
+}</pre>
+    </div>
+  </div>
+
+  <div class="accord">
+    <div class="accord-head" onclick="toggleAccord(this)">🏆 leaderboard (separate collection for fast reads) <span class="accord-icon">›</span></div>
+    <div class="accord-body">
+      <pre>// leaderboard/global/weekly/{uid}
+{
+  uid: string,
+  displayName: string,
+  photoURL: string,
+  weeklyPoints: number,
+  rank: string,
+  location: { city, country }
+}
+
+// leaderboard/local/{city}/weekly/{uid}
+// Same structure, pre-filtered by city
+// Updated via Cloud Function trigger on users/{uid} write</pre>
+    </div>
+  </div>
+
+  <div class="accord">
+    <div class="accord-head" onclick="toggleAccord(this)">🎮 gameScores <span class="accord-icon">›</span></div>
+    <div class="accord-body">
+      <pre>{
+  uid: string,
+  gameId: "waste-sorting",
+  score: number,           // items sorted correctly
+  timeTaken: number,       // seconds
+  level: number,           // difficulty level
+  pointsEarned: number,
+  playedAt: Timestamp
+}</pre>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 5: API DESIGN -->
+<section id="s5">
+  <div class="section-header">
+    <div class="section-num">05</div>
+    <h2>Complete API Design</h2>
+  </div>
+  <p class="body">Base URL: <code>https://ecotatva-api.onrender.com/api/v1</code> — All endpoints require <code>Authorization: Bearer {firebase_id_token}</code> header except /auth/verify.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Method</th><th>Endpoint</th><th>Purpose</th><th>Response Example</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag">POST</span></td><td><code>/auth/verify</code></td><td>Verify Firebase token, create user doc if new</td><td><code>{ uid, isNew, profile }</code></td></tr>
+        <tr><td><span class="tag blue">GET</span></td><td><code>/users/me</code></td><td>Get own profile + stats</td><td><code>{ uid, points, streak, badges, rank }</code></td></tr>
+        <tr><td><span class="tag">PUT</span></td><td><code>/users/me</code></td><td>Update profile (name, mode, location)</td><td><code>{ success: true }</code></td></tr>
+        <tr><td><span class="tag blue">GET</span></td><td><code>/tasks/today</code></td><td>Get today's 3 tasks for auth user</td><td><code>{ date, tasks: [Task] }</code></td></tr>
+        <tr><td><span class="tag">POST</span></td><td><code>/tasks/{taskId}/complete</code></td><td>Submit task completion with optional proof</td><td><code>{ pointsEarned, feedback, newBadges }</code></td></tr>
+        <tr><td><span class="tag blue">GET</span></td><td><code>/lessons</code></td><td>List available lessons (3 topics)</td><td><code>{ lessons: [LessonSummary] }</code></td></tr>
+        <tr><td><span class="tag blue">GET</span></td><td><code>/lessons/{id}</code></td><td>Full lesson content + quiz questions</td><td><code>{ lesson: Lesson }</code></td></tr>
+        <tr><td><span class="tag">POST</span></td><td><code>/lessons/{id}/quiz</code></td><td>Submit quiz answers, get score + feedback</td><td><code>{ score, correctCount, pointsEarned }</code></td></tr>
+        <tr><td><span class="tag blue">GET</span></td><td><code>/leaderboard/global</code></td><td>Top 50 users globally (weekly points)</td><td><code>{ entries: [LeaderEntry], myRank: number }</code></td></tr>
+        <tr><td><span class="tag blue">GET</span></td><td><code>/leaderboard/local</code></td><td>Top 50 in user's city</td><td><code>{ entries: [...], myRank: number }</code></td></tr>
+        <tr><td><span class="tag blue">GET</span></td><td><code>/impact/me</code></td><td>Personal eco-impact summary</td><td><code>{ co2Saved, waterSaved, treesEquiv, tasksDone }</code></td></tr>
+        <tr><td><span class="tag">POST</span></td><td><code>/game/score</code></td><td>Submit mini game score</td><td><code>{ pointsEarned, personalBest: bool }</code></td></tr>
+        <tr><td><span class="tag blue">GET</span></td><td><code>/badges</code></td><td>All available badges + user's earned ones</td><td><code>{ badges: [Badge] }</code></td></tr>
+        <tr><td><span class="tag blue">GET</span></td><td><code>/ai/task-hint/{taskId}</code></td><td>Gemini hint for how to complete a task</td><td><code>{ hint: string }</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="sub">Example: POST /tasks/{taskId}/complete</h3>
+  <pre>// Request Body
+{
+  "proofType": "photo",
+  "proofUrl": "https://storage.googleapis.com/ecotatva/proofs/uid123/task_abc.jpg",
+  "userNote": "I separated plastic bottles from my trash today!"
+}
+
+// Response
+{
+  "success": true,
+  "pointsEarned": 20,
+  "totalPoints": 340,
+  "feedback": "Great job! Separating plastic correctly reduces landfill by 30%.",
+  "newBadges": [{ "id": "waste-warrior-1", "name": "Waste Warrior", "icon": "🗑️" }],
+  "streakUpdate": { "current": 5, "isRecord": false },
+  "allTasksCompleted": false
+}</pre>
+</section>
+
+<!-- SECTION 6: FRONTEND STRUCTURE -->
+<section id="s6">
+  <div class="section-header">
+    <div class="section-num">06</div>
+    <h2>Frontend Structure</h2>
+  </div>
+
+  <h3 class="sub">Folder Structure (React + Vite)</h3>
+  <pre>src/
+├── App.jsx                        # Router setup (React Router v6)
+├── main.jsx                       # Entry point
+├── firebase.js                    # Firebase SDK init
+├── api/                           # All API calls (axios wrappers)
+│   ├── auth.js
+│   ├── tasks.js
+│   ├── lessons.js
+│   ├── leaderboard.js
+│   ├── community.js               # Feed posts, likes, comments
+│   ├── events.js                  # Eco-events CRUD
+│   └── game.js
+├── components/                    # Reusable UI components
+│   ├── layout/
+│   │   ├── Sidebar.jsx            # Fixed left nav: logo, icon+label items, user stub
+│   │   ├── TopHeader.jsx          # Search bar · XP pill · Streak pill · Bell · Avatar
+│   │   └── PageWrapper.jsx        # Sidebar + Header + scrollable content area
+│   ├── common/
+│   │   ├── Button.jsx
+│   │   ├── Badge.jsx
+│   │   ├── Modal.jsx
+│   │   ├── MetricCard.jsx         # Dashboard stat card (icon, number, label, trend)
+│   │   ├── StreakBadge.jsx        # 🔥 flame + number pill
+│   │   ├── XPDisplay.jsx          # ⚡ XP count pill (green)
+│   │   └── LoadingSpinner.jsx
+│   ├── tasks/
+│   │   ├── TaskCard.jsx           # Emoji icon · title · desc · difficulty chip · XP · Complete btn
+│   │   ├── TaskProofInput.jsx     # Expandable textarea for text proof submission
+│   │   └── TaskCompleteBanner.jsx # Green success banner + Gemini feedback
+│   ├── education/
+│   │   ├── FeaturedLessonBanner.jsx  # Large gradient card at top of Learn page
+│   │   ├── CategoryCard.jsx          # Topic category card (icon, name, lesson count)
+│   │   ├── LessonCard.jsx
+│   │   ├── QuizQuestion.jsx
+│   │   └── QuizResult.jsx            # Score ring + XP earned + breakdown
+│   ├── community/
+│   │   ├── PostCard.jsx           # Avatar · name · timestamp · text · image · ❤️ · 💬 · hashtags
+│   │   └── CreatePostModal.jsx    # Text input + image upload + hashtag picker
+│   ├── events/
+│   │   └── EventCard.jsx          # Cover image · title · date · location · Join btn
+│   ├── articles/
+│   │   └── ArticleCard.jsx        # Thumbnail · title · source tag · read-time chip
+│   ├── leaderboard/
+│   │   ├── PodiumDisplay.jsx      # 1st (centre/gold), 2nd (left/silver), 3rd (right/bronze)
+│   │   └── LeaderboardRow.jsx     # Rank · avatar · name · XP · streak · rank badge
+│   ├── badges/
+│   │   └── BadgeCard.jsx          # Circular progress ring · icon · earned/locked state
+│   └── chatbot/
+│       └── ChatBubble.jsx         # Message bubble (user=right, EcoBot=left with leaf avatar)
+├── pages/                         # One component per screen (rendered inside PageWrapper)
+│   ├── Splash.jsx                 # Full-screen animated splash + auth buttons
+│   ├── Onboarding.jsx             # Mode picker (Kids/Adult) + display name + avatar
+│   ├── Home.jsx                   # Dashboard: 4 metric cards + today's 3 task cards
+│   ├── Tasks.jsx                  # Full task list with proof submission + Gemini feedback
+│   ├── Education.jsx              # Featured lesson banner + category grid
+│   ├── Lesson.jsx                 # Lesson content + 5-question Gemini quiz
+│   ├── Game.jsx                   # Smart Waste Sorting mini game wrapper
+│   ├── Leaderboard.jsx            # Podium + ranked table + Global/Local toggle
+│   ├── Community.jsx              # Social feed + Create Post FAB
+│   ├── Events.jsx                 # Event cards grid + Upcoming/Nearby/Online tabs
+│   ├── Articles.jsx               # Article cards + category filter tabs
+│   ├── Badges.jsx                 # Badge grid (earned + locked) with progress rings
+│   ├── Profile.jsx                # Avatar · stats row · activity timeline · achievements
+│   ├── Chatbot.jsx                # EcoBot chat interface (Gemini-powered)
+│   └── Settings.jsx               # Account · Notifications · Appearance · Privacy sections
+├── context/
+│   ├── AuthContext.jsx            # Firebase user state
+│   └── UserContext.jsx            # EcoTatva profile state (XP, streak, rank, badges)
+├── hooks/
+│   ├── useTaskCompletion.js
+│   ├── useStreakCheck.js
+│   └── useGeminiHint.js
+└── utils/
+    ├── impactCalc.js              # Convert tasks → CO2 saved / water saved
+    ├── rankCalc.js
+    └── dateHelpers.js</pre>
+
+  <h3 class="sub mt">Screen Navigation Map (Sidebar Model)</h3>
+  <div class="flow" style="flex-direction:column; align-items:flex-start;">
+    <div class="flex-gap">
+      <div class="flow-step">/ Splash</div><div class="flow-arrow">→</div>
+      <div class="flow-step">/onboarding</div><div class="flow-arrow">→</div>
+      <div class="flow-step">/home (Dashboard)</div>
+    </div>
+    <div class="flex-gap mt">
+      <div class="flow-step">/home</div><div class="flow-arrow">Sidebar Nav →</div>
+      <div class="flow-step">/tasks</div>
+      <div class="flow-step">/education</div>
+      <div class="flow-step">/game</div>
+      <div class="flow-step">/leaderboard</div>
+    </div>
+    <div class="flex-gap mt">
+      <div class="flow-step">Sidebar Nav →</div>
+      <div class="flow-step">/community</div>
+      <div class="flow-step">/events</div>
+      <div class="flow-step">/articles</div>
+      <div class="flow-step">/badges</div>
+    </div>
+    <div class="flex-gap mt">
+      <div class="flow-step">Sidebar Nav →</div>
+      <div class="flow-step">/profile</div>
+      <div class="flow-step">/chatbot</div>
+      <div class="flow-step">/settings</div>
+    </div>
+    <div class="flex-gap mt">
+      <div class="flow-step">/education</div><div class="flow-arrow">→</div>
+      <div class="flow-step">/lesson/:id</div><div class="flow-arrow">→</div>
+      <div class="flow-step">Quiz Modal</div><div class="flow-arrow">→</div>
+      <div class="flow-step">Result Screen</div>
+    </div>
+  </div>
+
+  <div class="note">🎨 <strong>Design system:</strong> All screens use the shared <code>PageWrapper</code> (Sidebar + TopHeader). Card-based layout with soft shadows (<code>box-shadow: 0 4px 16px rgba(0,0,0,.07)</code>) and rounded corners (<code>border-radius: 14px</code>). Green eco theme throughout — primary green <code>#1a9b58</code>, accent teal <code>#2cc9aa</code>, warm amber <code>#f59e0b</code> for streaks.</div>
+</section>
+
+<!-- SECTION 7: BACKEND STRUCTURE -->
+<section id="s7">
+  <div class="section-header">
+    <div class="section-num">07</div>
+    <h2>Backend Structure</h2>
+  </div>
+
+  <pre>ecotatva-backend/
+├── main.py                    # FastAPI app entry, CORS config
+├── requirements.txt
+├── .env                       # GEMINI_API_KEY, FIREBASE_CREDENTIALS
+├── firebase_admin_init.py     # Firebase Admin SDK setup
+├── routers/                   # Route handlers (thin controllers)
+│   ├── auth.py               # /auth/verify
+│   ├── tasks.py              # /tasks/*
+│   ├── lessons.py            # /lessons/*
+│   ├── leaderboard.py        # /leaderboard/*
+│   ├── game.py               # /game/*
+│   ├── impact.py             # /impact/*
+│   └── badges.py             # /badges
+├── services/                  # Business logic (fat services)
+│   ├── auth_service.py       # Token verification, user creation
+│   ├── task_service.py       # Task CRUD, completion, validation
+│   ├── reward_engine.py      # Points, badges, streaks, rank
+│   ├── lesson_service.py     # Lesson fetch, quiz grading
+│   ├── leaderboard_service.py# Leaderboard reads/writes
+│   ├── gemini_service.py     # All Gemini API calls
+│   └── impact_service.py     # Eco-impact calculation
+├── models/                    # Pydantic request/response models
+│   ├── user.py
+│   ├── task.py
+│   ├── lesson.py
+│   └── reward.py
+├── scheduler/
+│   └── daily_task_gen.py     # Firebase Cloud Function wrapper
+├── middleware/
+│   └── auth_middleware.py    # Firebase token verification
+└── utils/
+    ├── firestore_client.py   # Firestore helper functions
+    └── constants.py          # Point values, badge criteria</pre>
+</section>
+
+<!-- SECTION 8: REWARD ENGINE -->
+<section id="s8">
+  <div class="section-header">
+    <div class="section-num">08</div>
+    <h2>Reward Engine Logic</h2>
+  </div>
+
+  <h3 class="sub">Points System</h3>
+  <div class="points-grid">
+    <div class="points-card"><div class="points-val">10</div><div class="points-label">Easy task completed</div></div>
+    <div class="points-card"><div class="points-val">20</div><div class="points-label">Medium task completed</div></div>
+    <div class="points-card"><div class="points-val">30</div><div class="points-label">Hard task completed</div></div>
+    <div class="points-card"><div class="points-val">25</div><div class="points-label">All 3 daily tasks done (bonus)</div></div>
+    <div class="points-card"><div class="points-val">15</div><div class="points-label">Quiz lesson completed</div></div>
+    <div class="points-card"><div class="points-val">10</div><div class="points-label">Perfect quiz score bonus</div></div>
+    <div class="points-card"><div class="points-val">5–20</div><div class="points-label">Mini game (based on score)</div></div>
+    <div class="points-card"><div class="points-val">50</div><div class="points-label">7-day streak milestone</div></div>
+    <div class="points-card"><div class="points-val">150</div><div class="points-label">30-day streak milestone</div></div>
+  </div>
+
+  <h3 class="sub mt">Rank System (by total points)</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Rank</th><th>Min Points</th><th>Icon</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Seed</strong></td><td>0</td><td>🌱</td><td>Just starting your eco journey</td></tr>
+        <tr><td><strong>Sprout</strong></td><td>200</td><td>🌿</td><td>Growing eco awareness</td></tr>
+        <tr><td><strong>Sapling</strong></td><td>500</td><td>🌳</td><td>Making real daily habits</td></tr>
+        <tr><td><strong>Tree</strong></td><td>1000</td><td>🌲</td><td>Consistent eco champion</td></tr>
+        <tr><td><strong>Forest Guardian</strong></td><td>2500</td><td>🌍</td><td>Inspiring others daily</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="sub mt">Reward Engine Code Logic</h3>
+  <pre>
+# services/reward_engine.py
+
+RANK_THRESHOLDS = [
+    (0, "Seed"), (200, "Sprout"), (500, "Sapling"),
+    (1000, "Tree"), (2500, "Forest Guardian")
+]
+
+BADGE_CRITERIA = {
+    "first_task": {"type": "task_count", "value": 1},
+    "streak_3": {"type": "streak", "value": 3},
+    "streak_7": {"type": "streak", "value": 7},
+    "waste_warrior": {"type": "category_tasks", "category": "waste", "value": 5},
+    "water_saver": {"type": "category_tasks", "category": "water", "value": 5},
+    "energy_hero": {"type": "category_tasks", "category": "energy", "value": 5},
+    "quiz_master": {"type": "perfect_quizzes", "value": 3},
+    "daily_champion": {"type": "all_tasks_days", "value": 7},
+}
+
+async def award_points_and_badges(uid: str, points: int, context: dict) -> dict:
+    user = await get_user(uid)
+    user.totalPoints += points
+    user.weeklyPoints += points
+    
+    # Streak update
+    today = date.today()
+    if user.lastActiveAt.date() == today - timedelta(days=1):
+        user.currentStreak += 1
+    elif user.lastActiveAt.date() != today:
+        user.currentStreak = 1
+    
+    if user.currentStreak > user.longestStreak:
+        user.longestStreak = user.currentStreak
+    
+    # Streak milestones
+    if user.currentStreak in [7, 30]:
+        bonus = 50 if user.currentStreak == 7 else 150
+        user.totalPoints += bonus
+    
+    # Rank check
+    new_rank = calculate_rank(user.totalPoints)
+    
+    # Badge check
+    new_badges = await check_badges(uid, user, context)
+    
+    await update_user(uid, user)
+    await update_leaderboard(uid, user)
+    
+    return {"pointsAdded": points, "newRank": new_rank, "newBadges": new_badges}
+
+def calculate_rank(points: int) -> str:
+    rank = "Seed"
+    for threshold, name in RANK_THRESHOLDS:
+        if points >= threshold:
+            rank = name
+    return rank
+  </pre>
+</section>
+
+<!-- SECTION 9: DAILY TASK ENGINE -->
+<section id="s9">
+  <div class="section-header">
+    <div class="section-num">09</div>
+    <h2>Daily Task Engine</h2>
+  </div>
+
+  <div class="flow">
+    <div class="flow-step">00:00 IST Cron</div><div class="flow-arrow">→</div>
+    <div class="flow-step">Fetch all active users</div><div class="flow-arrow">→</div>
+    <div class="flow-step">Build Gemini prompt</div><div class="flow-arrow">→</div>
+    <div class="flow-step">Get 3 personalized tasks</div><div class="flow-arrow">→</div>
+    <div class="flow-step">Write to Firestore</div><div class="flow-arrow">→</div>
+    <div class="flow-step">Send FCM notification</div>
+  </div>
+
+  <h3 class="sub mt">Task Generation Logic</h3>
+  <pre>
+# scheduler/daily_task_gen.py (Firebase Cloud Function)
+
+async def generate_daily_tasks(user: User) -> List[Task]:
+    
+    # Get user's history to avoid repetition
+    recent_tasks = await get_recent_tasks(user.uid, days=7)
+    recent_titles = [t.title for t in recent_tasks]
+    
+    prompt = f"""
+Generate exactly 3 unique eco-tasks for today for a {user.ageGroup} student 
+in {user.location.city}, India.
+
+User stats:
+- Total tasks done: {user.totalTasksDone}
+- Preferred topics: {user.preferredTopics}
+- Current streak: {user.currentStreak} days
+
+Rules:
+- 1 easy (10 pts), 1 medium (20 pts), 1 hard (30 pts)
+- Each must be completable TODAY at home or school
+- Make them specific (not vague like "save water")
+- Do NOT repeat these recent tasks: {recent_titles[:10]}
+- Age-appropriate for {user.ageGroup}
+
+Return ONLY valid JSON array:
+[
+  {{"title":"...", "description":"...", "category":"waste|water|energy", 
+    "difficulty":"easy", "points":10, "proofType":"text|photo|none"}},
+  ...
+]
+"""
+    
+    response = await gemini_service.generate(prompt, temperature=0.7)
+    tasks = parse_gemini_tasks(response)
+    
+    # FALLBACK: If Gemini fails, use curated task bank
+    if not tasks:
+        tasks = get_fallback_tasks(user.preferredTopics)
+    
+    return tasks
+
+# Reset logic: tasks marked stale if date != today when user opens app
+# Completion: proofType="photo" → upload to Storage → Gemini validates image
+# proofType="text" → Gemini validates description makes sense
+# proofType="none" → honor system, no validation needed</pre>
+</section>
+
+<!-- SECTION 10: GEMINI AI -->
+<section id="s10">
+  <div class="section-header">
+    <div class="section-num">10</div>
+    <h2>Gemini AI Integration Plan</h2>
+  </div>
+
+  <h3 class="sub">Use Case 1 – Task Generation (daily)</h3>
+  <div class="prompt-box">
+    <div class="prompt-label">Gemini Prompt – Daily Task Generator</div>
+    <div class="prompt-text">You are an eco-education assistant for school students in India.
+Generate 3 real-world eco-tasks for a {age_group} student in {city}.
+
+Task format (JSON only, no markdown):
+[{"title":"", "description":"", "category":"waste|water|energy", 
+  "difficulty":"easy|medium|hard", "points":10|20|30, 
+  "proofType":"text|photo|none"}]
+
+Rules:
+- Easy: requires 5 min, doable at home
+- Medium: requires some effort, maybe at school  
+- Hard: requires planning, family involvement OK
+- No repetition of: {recent_task_titles}
+- Data: use facts from UN SDG Goal 6, 7, 12</div>
+    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+  </div>
+
+  <h3 class="sub">Use Case 2 – Quiz Generation</h3>
+  <div class="prompt-box">
+    <div class="prompt-label">Gemini Prompt – Quiz Generator</div>
+    <div class="prompt-text">Create a 5-question multiple choice quiz about: {topic}
+Target audience: {age_group} students in India.
+Difficulty: {difficulty}
+
+Return ONLY valid JSON:
+{"questions": [
+  {"question":"", "options":["A","B","C","D"], 
+   "correctIndex":0, "explanation":"Why A is correct in 1 sentence."}
+]}
+
+Rules:
+- Base facts on IPCC, UN, Indian government data
+- No trick questions — educational purpose only
+- {age_group == "kids"}: use simple language, relatable examples</div>
+    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+  </div>
+
+  <h3 class="sub">Use Case 3 – Task Proof Validation</h3>
+  <div class="prompt-box">
+    <div class="prompt-label">Gemini Prompt – Proof Validator</div>
+    <div class="prompt-text">A student claims to have completed this eco-task:
+Task: "{task_title}"
+Their description: "{user_description}"
+
+On a scale of 0-100, how likely is this description genuine and aligned 
+with the task? Consider:
+- Does the action described match the task?
+- Is the description plausible for a student?
+
+Return ONLY JSON:
+{"score": 75, "feedback": "Great effort! One tip: {specific tip}", "valid": true}</div>
+    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+  </div>
+
+  <h3 class="sub">Fallback Strategy</h3>
+  <div class="card-grid">
+    <div class="card">
+      <h3>🔄 Task Generation Failure</h3>
+      <p>Maintain a <strong>curated JSON bank</strong> of 90 tasks (30 per topic × 3 difficulties). If Gemini API fails/times out (3s threshold), randomly select 3 from bank filtered by user's preferred topics. Never show loading spinner > 3s.</p>
+    </div>
+    <div class="card">
+      <h3>📝 Quiz Generation Failure</h3>
+      <p>Pre-generate and store 5 quizzes per topic in Firestore. Gemini regenerates them weekly in background. On failure, serve cached quiz. User never sees an empty quiz screen.</p>
+    </div>
+    <div class="card">
+      <h3>✅ Proof Validation Failure</h3>
+      <p>If validation fails, auto-approve with score=50 and generic feedback "Thanks for trying! Keep it up." Never block a user from earning points due to API issues.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 11: MINI GAME -->
+<section id="s11">
+  <div class="section-header">
+    <div class="section-num">11</div>
+    <h2>Mini Game Architecture – Smart Waste Sorting</h2>
+  </div>
+
+  <div class="card">
+    <h3>🎮 Game Overview</h3>
+    <p style="font-size:13.5px; color:var(--text-muted);">Items fall from top. Player drags or clicks to sort into 4 bins. Timer creates urgency. Wrong bin = strike. 3 strikes = game over.</p>
+  </div>
+
+  <h3 class="sub">Bin Categories</h3>
+  <div class="card-grid">
+    <div class="card"><h3>♻️ Dry Waste (Blue)</h3><ul><li>Paper, cardboard</li><li>Plastic bottles, bags</li><li>Glass bottles</li><li>Metal cans</li></ul></div>
+    <div class="card"><h3>🍃 Wet Waste (Green)</h3><ul><li>Food scraps</li><li>Vegetable peels</li><li>Tea leaves, coffee grounds</li><li>Garden waste</li></ul></div>
+    <div class="card"><h3>☢️ Hazardous (Red)</h3><ul><li>Batteries, bulbs</li><li>Chemical containers</li><li>Paint cans</li><li>Medicines</li></ul></div>
+    <div class="card"><h3>📱 E-Waste (Yellow)</h3><ul><li>Old phones</li><li>Charger cables</li><li>Electronic parts</li><li>Keyboards/mice</li></ul></div>
+  </div>
+
+  <h3 class="sub mt">Technical Implementation (React)</h3>
+  <pre>
+// Game state structure
+const gameState = {
+  items: [],          // falling items queue
+  score: 0,
+  strikes: 0,         // max 3
+  timeLeft: 60,       // seconds
+  level: 1,           // speed increases
+  isRunning: false,
+  currentItem: null   // item player is holding
+}
+
+// Item pool (expand with Gemini later)
+const ITEMS = [
+  { id: "plastic_bottle", name: "Plastic Bottle", emoji: "🍶", bin: "dry", points: 10 },
+  { id: "apple_core", name: "Apple Core", emoji: "🍎", bin: "wet", points: 10 },
+  { id: "old_phone", name: "Old Phone", emoji: "📱", bin: "ewaste", points: 15 },
+  { id: "battery", name: "Battery", emoji: "🔋", bin: "hazardous", points: 15 },
+  // ... 20 more items
+]
+
+// Core game loop
+useEffect(() => {
+  if (!gameState.isRunning) return;
+  const interval = setInterval(() => {
+    spawnNewItem();           // add item to queue
+    setTimeLeft(t => t - 1); // countdown
+    if (timeLeft <= 0) endGame();
+  }, 1000);
+  return () => clearInterval(interval);
+}, [gameState.isRunning]);
+
+// Drag and drop with touch support
+const handleDrop = (binId) => {
+  if (binId === currentItem.bin) {
+    setScore(s => s + currentItem.points * level);
+    showSuccess();
+  } else {
+    setStrikes(s => s + 1);
+    showError("That goes in " + BIN_LABELS[currentItem.bin]);
+    if (strikes >= 2) endGame();
+  }
+};
+
+// Points → EcoTatva points conversion
+// Game score 0-100 → 5-20 EcoTatva points (linear)
+const convertScore = (gameScore) => Math.round((gameScore / 100) * 15) + 5;</pre>
+</section>
+
+<!-- SECTION 12: SECURITY -->
+<section id="s12">
+  <div class="section-header">
+    <div class="section-num">12</div>
+    <h2>Security, Privacy & Kids Data Handling</h2>
+  </div>
+  <div class="card-grid">
+    <div class="card">
+      <h3>🔐 Authentication</h3>
+      <ul>
+        <li>Firebase Auth tokens verified server-side on every request</li>
+        <li>Tokens expire in 1 hour, refresh automatically</li>
+        <li>No passwords stored — Firebase handles it</li>
+        <li>HTTPS enforced on all endpoints</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>👶 Kids Data (COPPA / DPDP)</h3>
+      <ul>
+        <li>Kids mode requires parent email during signup</li>
+        <li>No real name collected for under-13 (display name only)</li>
+        <li>No location sharing for kids — city-level only</li>
+        <li>Photo proofs for kids are auto-deleted after 24 hours</li>
+        <li>No third-party analytics for kids accounts</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>🔒 Firestore Security Rules</h3>
+      <pre style="font-size:11px;">rules_version = '2';
+service cloud.firestore {
+  match /databases/{db}/documents {
+    match /users/{uid} {
+      allow read, write: if request.auth.uid == uid;
+    }
+    match /tasks/{uid}/{doc=**} {
+      allow read, write: if request.auth.uid == uid;
+    }
+    match /leaderboard/{doc=**} {
+      allow read: if request.auth != null;
+      allow write: if false; // backend only
+    }
+  }
+}</pre>
+    </div>
+    <div class="card">
+      <h3>🛡️ Data Privacy</h3>
+      <ul>
+        <li>Gemini receives zero PII — tasks sent with uid hash only</li>
+        <li>Photos analyzed by Gemini Vision but not stored by Google</li>
+        <li>Privacy policy link on signup screen</li>
+        <li>User can delete account + all data from profile screen</li>
+        <li>No data sold to third parties</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 13: DEPLOYMENT -->
+<section id="s13">
+  <div class="section-header">
+    <div class="section-num">13</div>
+    <h2>Deployment & CI/CD Plan</h2>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Component</th><th>Platform</th><th>Deploy Command</th><th>Auto-Deploy Trigger</th></tr></thead>
+      <tbody>
+        <tr><td>React Frontend</td><td>Vercel</td><td>vercel --prod</td><td>Push to main branch</td></tr>
+        <tr><td>FastAPI Backend</td><td>Render.com</td><td>Auto from GitHub</td><td>Push to main branch</td></tr>
+        <tr><td>Cloud Functions</td><td>Firebase</td><td>firebase deploy --only functions</td><td>Manual or GitHub Action</td></tr>
+        <tr><td>Firestore Rules</td><td>Firebase</td><td>firebase deploy --only firestore:rules</td><td>Manual</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <h3 class="sub">GitHub Actions Workflow</h3>
+  <pre>
+# .github/workflows/deploy.yml
+name: Deploy EcoTatva
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
+      - run: cd frontend && npm ci && npm run build
+      - uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.ORG_ID }}
+          vercel-project-id: ${{ secrets.PROJECT_ID }}
+          vercel-args: '--prod'
+
+  deploy-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Trigger Render deploy
+        run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}</pre>
+</section>
+
+<!-- SECTION 14: ROADMAP -->
+<section id="s14">
+  <div class="section-header">
+    <div class="section-num">14</div>
+    <h2>10-Day Development Roadmap (4-member team)</h2>
+  </div>
+
+  <h3 class="sub">Team Roles</h3>
+  <div class="card-grid" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr));">
+    <div class="role-card">
+      <div class="role-header">
+        <div class="role-avatar" style="background:#dcfce7; color:#166534;">A</div>
+        <div><div class="role-name">Dev A</div><div class="role-title">Frontend Lead</div></div>
+      </div>
+      <ul><li>React screens, navigation, UI components</li><li>Firebase Auth integration</li><li>Mini game (React DnD)</li></ul>
+    </div>
+    <div class="role-card">
+      <div class="role-header">
+        <div class="role-avatar" style="background:#dbeafe; color:#1e40af;">B</div>
+        <div><div class="role-name">Dev B</div><div class="role-title">Backend Lead</div></div>
+      </div>
+      <ul><li>FastAPI setup, all endpoints</li><li>Reward engine, task service</li><li>Gemini integration</li></ul>
+    </div>
+    <div class="role-card">
+      <div class="role-header">
+        <div class="role-avatar" style="background:#fef9c3; color:#92400e;">C</div>
+        <div><div class="role-name">Dev C</div><div class="role-title">Firebase + AI</div></div>
+      </div>
+      <ul><li>Firestore schema setup</li><li>Cloud Functions (scheduler)</li><li>Gemini prompts & fallback</li></ul>
+    </div>
+    <div class="role-card">
+      <div class="role-header">
+        <div class="role-avatar" style="background:#fce7f3; color:#9d174d;">D</div>
+        <div><div class="role-name">Dev D</div><div class="role-title">Design + Demo</div></div>
+      </div>
+      <ul><li>UI/UX design (Figma)</li><li>PPT creation</li><li>Demo video script + recording</li></ul>
+    </div>
+  </div>
+
+  <h3 class="sub mt">Day-by-Day Plan</h3>
+  <div class="roadmap-day">
+    <h4>Day 1 – Foundation</h4>
+    <p>Set up GitHub repo + monorepo structure. Firebase project + Firestore schema. Vercel + Render accounts. All env vars configured. Dev A: Splash + Onboarding screens + <strong>Sidebar.jsx + TopHeader.jsx + PageWrapper.jsx</strong> layout shell. Dev B: FastAPI skeleton + /auth/verify. Dev C: Firestore rules + seed data. Dev D: Figma wireframes for all screens (matching reference UI).</p>
+    <div class="tags"><span class="tag">Setup</span><span class="tag amber">Auth</span><span class="tag blue">Layout Shell</span></div>
+  </div>
+  <div class="roadmap-day">
+    <h4>Day 2 – Auth + Dashboard</h4>
+    <p>Complete Firebase Auth flow (Google + Email). User profile creation in Firestore. Mode picker (Kids/Adult). <strong>Home.jsx dashboard</strong> with 4 metric cards (Total XP, Streak, CO₂ Saved, Tasks Completed) + today's task card list. TopHeader showing live XP + streak pills. Dev B: /users/me endpoints. Dev C: Gemini API key setup + first test prompt.</p>
+    <div class="tags"><span class="tag">Auth</span><span class="tag blue">Dashboard</span></div>
+  </div>
+  <div class="roadmap-day">
+    <h4>Day 3 – Task System</h4>
+    <p>Dev A: <strong>TaskCard.jsx</strong> (emoji icon, title, desc, difficulty chip, XP reward, Complete button) + Tasks.jsx page with inline proof input. Dev B: /tasks/today + /tasks/{id}/complete endpoints. Dev C: Gemini task generation + fallback bank (90 tasks JSON file). Dev D: Task completion animation + Gemini feedback banner design.</p>
+    <div class="tags"><span class="tag">Tasks</span><span class="tag">Gemini</span></div>
+  </div>
+  <div class="roadmap-day">
+    <h4>Day 4 – Reward Engine</h4>
+    <p>Full reward_engine.py with points, streaks, badges, ranks. Test all edge cases. Dev A: XP display pill, badge unlock animation, streak badge component, <strong>Badges.jsx</strong> page with earned/locked grid + circular progress rings. Integrate reward API with frontend. All reward flows working end-to-end.</p>
+    <div class="tags"><span class="tag amber">Rewards</span><span class="tag">Streaks</span><span class="tag blue">Badges Page</span></div>
+  </div>
+  <div class="roadmap-day">
+    <h4>Day 5 – Education Module</h4>
+    <p>Dev A: <strong>Education.jsx</strong> with featured lesson banner + category grid (Waste/Water/Energy cards), Lesson.jsx with content and quiz, QuizResult.jsx with score ring. Dev B: /lessons + /lessons/{id}/quiz endpoints. Dev C: Gemini quiz generation + cache to Firestore. Dev D: Educational content for 3 topics (facts from UN SDG data).</p>
+    <div class="tags"><span class="tag blue">Education</span><span class="tag">Gemini</span></div>
+  </div>
+  <div class="roadmap-day">
+    <h4>Day 6 – Mini Game + Community Feed</h4>
+    <p>Dev A: Full Smart Waste Sorting game — drag/drop, timer, strikes, game over screen + <strong>Community.jsx</strong> social feed with PostCard.jsx (avatar, text, image, likes, comments, hashtags) and CreatePostModal.jsx. Dev B: /game/score + /community/* endpoints. Dev C: Firestore game score + community post storage. Game score → EcoTatva XP conversion working.</p>
+    <div class="tags"><span class="tag coral">Mini Game</span><span class="tag">Community Feed</span></div>
+  </div>
+  <div class="roadmap-day">
+    <h4>Day 7 – Leaderboard + Events + Articles</h4>
+    <p>Dev A: <strong>Leaderboard.jsx</strong> with PodiumDisplay.jsx (gold/silver/bronze) + ranked table + Global/Local toggle. <strong>Events.jsx</strong> with EventCard.jsx (cover image, date, join button, tabs). <strong>Articles.jsx</strong> with ArticleCard.jsx + category filters. Dev B: /leaderboard/* endpoints + leaderboard service. Dev C: Cloud Function for leaderboard update triggers.</p>
+    <div class="tags"><span class="tag">Leaderboard</span><span class="tag blue">Events</span><span class="tag amber">Articles</span></div>
+  </div>
+  <div class="roadmap-day">
+    <h4>Day 8 – Chatbot + Profile + Settings + Scheduler</h4>
+    <p>Dev A: <strong>Chatbot.jsx</strong> (EcoBot powered by Gemini — chat bubbles, quick-reply chips, text input). <strong>Profile.jsx</strong> (avatar, stats row, activity timeline, achievements). <strong>Settings.jsx</strong> (Account / Notifications / Appearance / Privacy sections). Dev B+C: Firebase Cloud Function cron job for daily task generation (00:00 IST). FCM push notifications. Dev D: Begin PPT template (official GDG template).</p>
+    <div class="tags"><span class="tag amber">EcoBot</span><span class="tag">Profile</span><span class="tag blue">Settings</span><span class="tag">Scheduler</span></div>
+  </div>
+  <div class="roadmap-day">
+    <h4>Day 9 – Polish + Bug Fixes</h4>
+    <p>End-to-end testing of all 15 screens. Fix all critical bugs. Dev A: Loading states, error handling, empty states, offline messages — all UI must match reference screenshots exactly. Sidebar active-state transitions, top header XP/streak live updates. Dev D: Finalize PPT (10 slides with actual app screenshots). Demo video recording (3 min). Kids mode testing. Performance optimization (lazy load, image compression).</p>
+    <div class="tags"><span class="tag">QA</span><span class="tag coral">Polish</span></div>
+  </div>
+  <div class="roadmap-day">
+    <h4>Day 10 – Demo + Submit</h4>
+    <p>Final video edit. GitHub README with setup instructions. Submission form filled. Practice live demo walkthrough (Dashboard → Tasks → Learn → Leaderboard → Community). Backup plan if API goes down (recorded demo ready). All team members review PPT talking points.</p>
+    <div class="tags"><span class="tag">Submit</span><span class="tag amber">Demo</span></div>
+  </div>
+</section>
+
+<!-- SECTION 15: MVP vs FUTURE -->
+<section id="s15">
+  <div class="section-header">
+    <div class="section-num">15</div>
+    <h2>MVP vs Future Scope</h2>
+  </div>
+  <div class="card-grid">
+    <div class="card" style="border-color:var(--green-200);">
+      <h3 style="color:var(--green-700);">&#x2705; Build NOW (MVP &ndash; Hackathon)</h3>
+      <ul>
+        <li>Google + Email authentication</li>
+        <li>Kids / Adult mode toggle</li>
+        <li>Daily 3-task system with Gemini personalization</li>
+        <li>Points, streaks, badges, ranks</li>
+        <li>3 education topics + Gemini quizzes</li>
+        <li>Smart Waste Sorting mini game</li>
+        <li>Global + local leaderboard</li>
+        <li>Community feed (share achievements)</li>
+        <li>Articles &amp; updates section</li>
+        <li>Text-based task proof submission</li>
+        <li>Firebase Cloud Function daily scheduler</li>
+      </ul>
+    </div>
+    <div class="card" style="border-color:#fcd34d;">
+      <h3 style="color:var(--amber-800);">&#x1F52E; Build LATER (Post-Hackathon)</h3>
+      <ul>
+        <li>Photo proof upload + Gemini Vision validation</li>
+        <li>Basic impact dashboard (CO2 / water saved)</li>
+        <li>Events tab (eco-events near you)</li>
+        <li>GPS mobility tracking (walking)</li>
+        <li>Teacher dashboard</li>
+        <li>Eco-club school leaderboards</li>
+        <li>More mini games (2, 3, 4)</li>
+        <li>6 more education topics</li>
+        <li>Digital certificates (PDF download)</li>
+        <li>Monthly challenges</li>
+        <li>Flutter mobile app (native iOS/Android)</li>
+        <li>NGO partnerships for real-world rewards</li>
+      </ul>
+    </div>
+  </div>
+  <div class="note">&#x26A1; The architecture is <strong>already designed to support all future features</strong>. No refactoring needed &mdash; just add new routes, services, and screens.</div>
+</section>
+
+<!-- SECTION 16: JUDGE STRATEGY -->
+<section id="s16">
+  <div class="section-header">
+    <div class="section-num">16</div>
+    <h2>Judge-Winning Strategy + PPT Slides</h2>
+  </div>
+
+  <h3 class="sub">30-Second Elevator Pitch</h3>
+  <div class="card" style="border-left: 4px solid var(--green-400);">
+    <p style="font-size:15px; line-height:1.8; color:var(--gray-800);">
+      "Every year, 8 million tons of plastic enter our oceans &mdash; yet most students learn about it in a textbook and forget by tomorrow. EcoTatva changes that. It&rsquo;s a gamified web app where students complete real-world eco-tasks daily, earn XP and badges, compete on global and local leaderboards, share achievements in a community feed, and watch their actual environmental impact grow. Powered by Google&rsquo;s Gemini AI, every task is personalized and every lesson is interactive. We&rsquo;re not teaching sustainability &mdash; we&rsquo;re building the habit."
+    </p>
+  </div>
+
+  <h3 class="sub mt">10 PPT Slides (GDG Official Template)</h3>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:.75rem;">
+    <div class="slide">
+      <div class="slide-num">1/10</div>
+      <h3>The Problem</h3>
+      <ul>
+        <li>78% of students can&rsquo;t name 3 sustainable habits (UNICEF 2023)</li>
+        <li>Environmental education is theoretical, not actionable</li>
+        <li>Students have no measurable personal eco-impact</li>
+        <li>Show: photo of textbook vs. photo of polluted river</li>
+      </ul>
+    </div>
+    <div class="slide">
+      <div class="slide-num">2/10</div>
+      <h3>Our Solution &mdash; EcoTatva</h3>
+      <ul>
+        <li>EcoTatva: daily AI-personalized eco-tasks + gamification + community + real impact</li>
+        <li>Show: EcoTatva Dashboard screenshot &mdash; sidebar nav, 4 metric cards (XP, Streak, CO&#x2082; Saved, Tasks Done), today&rsquo;s task cards</li>
+        <li>Core user loop: Learn &#x2192; Do Task &#x2192; Earn XP &#x2192; Compete &#x2192; Share &#x2192; Return Daily</li>
+        <li>13 screens: Dashboard, Tasks, Learn, Leaderboard, Community, Events, Articles, Badges, Profile, EcoBot, Settings</li>
+      </ul>
+    </div>
+    <div class="slide">
+      <div class="slide-num">3/10</div>
+      <h3>Live Demo</h3>
+      <ul>
+        <li>Start on Dashboard &mdash; show XP pill + streak in top header</li>
+        <li>Navigate via sidebar to Tasks &mdash; Gemini generates a personalized task live</li>
+        <li>Complete a task &mdash; XP animates up, badge unlock notification fires</li>
+        <li>Switch to Leaderboard &mdash; show podium + ranked table (Global / Local toggle)</li>
+        <li>Switch to Community &mdash; show feed post with likes + hashtags</li>
+      </ul>
+    </div>
+    <div class="slide">
+      <div class="slide-num">4/10</div>
+      <h3>Google AI Integration</h3>
+      <ul>
+        <li>Gemini 1.5 Flash: task generation, quiz creation, task-proof validation, EcoBot chat</li>
+        <li>Show actual Gemini prompt &rarr; output on screen (Section 10 prompts)</li>
+        <li>Personalization: age group, city, preferred topics, recent task history</li>
+        <li>EcoBot chatbot: students ask eco questions, get task hints, quiz explanations</li>
+      </ul>
+    </div>
+    <div class="slide">
+      <div class="slide-num">5/10</div>
+      <h3>Impact Metrics</h3>
+      <ul>
+        <li>If 1,000 students use EcoTatva for 30 days&hellip;</li>
+        <li>&#x2192; 90,000 eco-tasks completed</li>
+        <li>&#x2192; ~450 kg CO&#x2082; saved equivalent</li>
+        <li>&#x2192; ~90,000 litres water conserved</li>
+        <li>Show: EcoTatva Profile page &mdash; stats row with XP, streak, tasks done, badges earned</li>
+      </ul>
+    </div>
+    <div class="slide">
+      <div class="slide-num">6/10</div>
+      <h3>Technology Stack</h3>
+      <ul>
+        <li>React + Vite (Vercel) + FastAPI (Render.com) + Firebase</li>
+        <li>Architecture diagram (simplified &mdash; from Section 2)</li>
+        <li>All on Google Cloud / 100% free tier for hackathon</li>
+        <li>Show: EcoTatva Learn page screenshot &mdash; featured lesson banner + category cards</li>
+      </ul>
+    </div>
+    <div class="slide">
+      <div class="slide-num">7/10</div>
+      <h3>Business Model</h3>
+      <ul>
+        <li>Phase 1: Free for students (growth + engagement)</li>
+        <li>Phase 2: School subscriptions (&#x20B9;500/month/school) with teacher dashboard</li>
+        <li>Phase 3: NGO partnerships, CSR grants, digital certificates</li>
+        <li>Long-term: government NDAP data integration + eco-event ecosystem</li>
+      </ul>
+    </div>
+    <div class="slide">
+      <div class="slide-num">8/10</div>
+      <h3>Market Opportunity</h3>
+      <ul>
+        <li>250M+ school students in India</li>
+        <li>EdTech market: $4B by 2025 (India)</li>
+        <li>No direct competitor combining gamification + Gemini AI + eco-education + community</li>
+        <li>Show: EcoTatva Community feed + Badges page screenshots</li>
+      </ul>
+    </div>
+    <div class="slide">
+      <div class="slide-num">9/10</div>
+      <h3>Roadmap</h3>
+      <ul>
+        <li>Now (MVP): Tasks, Learn, Game, Leaderboard, Community, Articles &mdash; 13 screens live</li>
+        <li>3 months: Flutter app, teacher dashboard, photo proof + Gemini Vision, impact dashboard</li>
+        <li>6 months: 10-school pilot, eco-club leaderboards, monthly challenges</li>
+        <li>12 months: NGO API, digital certificates, 6 more education topics</li>
+      </ul>
+    </div>
+    <div class="slide">
+      <div class="slide-num">10/10</div>
+      <h3>Team + Ask</h3>
+      <ul>
+        <li>4-person team (names + roles)</li>
+        <li>Built in 10 days &mdash; 13 screens, Gemini-powered, fully deployed</li>
+        <li>GitHub link + live EcoTatva URL</li>
+        <li>"We&rsquo;re not just building an app. We&rsquo;re building eco-citizens."</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 17: RISKS -->
+<section id="s17">
+  <div class="section-header">
+    <div class="section-num">17</div>
+    <h2>Risk Matrix</h2>
+  </div>
+
+  <div class="risk-row open">
+    <div class="risk-header" onclick="toggleRisk(this)">
+      <span class="risk-level high">HIGH</span>
+      <strong>Gemini API down / rate limit hit during demo</strong>
+    </div>
+    <div class="risk-body">
+      <p style="font-size:13px; color:var(--text-muted); margin-bottom:.75rem;">This would be catastrophic live. Counter-measures:</p>
+      <ol>
+        <li><strong>Fallback task bank:</strong> 90 pre-written tasks in <code>fallback_tasks.json</code>. If Gemini fails (timeout > 3s), serve from bank. Zero loading delay.</li>
+        <li><strong>Cached quizzes:</strong> Run Gemini quiz generation for all 3 topics the night before. Store in Firestore. Demo never calls Gemini for quizzes live.</li>
+        <li><strong>Demo API key:</strong> Use a separate API key with higher quota just for demo day. Keep main key for production.</li>
+        <li><strong>Recorded demo backup:</strong> Record a 3-minute flawless walkthrough the day before. If live demo breaks, switch to recording immediately. Judges have seen this — it's acceptable.</li>
+        <li><strong>Local mock server:</strong> <code>mock_gemini.py</code> that returns hardcoded responses. Switch with env var <code>USE_MOCK_AI=true</code>.</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="risk-row">
+    <div class="risk-header" onclick="toggleRisk(this)">
+      <span class="risk-level high">HIGH</span>
+      <strong>Backend on Render goes to sleep (free tier cold start)</strong>
+    </div>
+    <div class="risk-body">
+      <ol>
+        <li><strong>Warm-up ping:</strong> GitHub Action pings <code>/health</code> every 14 minutes to prevent sleep.</li>
+        <li><strong>Frontend caching:</strong> Cache API responses in localStorage for 5 minutes. If backend is starting, show cached data.</li>
+        <li><strong>UptimeRobot:</strong> Free monitoring that pings every 5 minutes. Keeps Render awake.</li>
+        <li><strong>Move critical reads to Firebase directly:</strong> Leaderboard and profile reads go direct to Firestore from frontend (no backend needed).</li>
+        <li><strong>Upgrade temporarily:</strong> Render Starter plan ($7/month) for 1 week around demo. Downgrade after.</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="risk-row">
+    <div class="risk-header" onclick="toggleRisk(this)">
+      <span class="risk-level med">MEDIUM</span>
+      <strong>Team falls behind schedule — not all features ready for demo</strong>
+    </div>
+    <div class="risk-body">
+      <ol>
+        <li><strong>Core 4 features first:</strong> Auth → Tasks → Rewards → Leaderboard. Everything else is nice-to-have. Define this hierarchy on Day 1.</li>
+        <li><strong>Daily standups (15 min):</strong> Each person says what's done, what's blocked. Catch delays by Day 4 not Day 9.</li>
+        <li><strong>Feature flags:</strong> Build incomplete features behind <code>FEATURE_FLAGS</code> env var. Show or hide without deleting code.</li>
+        <li><strong>Scope cut protocol:</strong> If behind by Day 7, cut mini game (demo it as "coming soon"). Core loop still impresses.</li>
+        <li><strong>Pair programming on blockers:</strong> If anyone is stuck >2 hours, immediately pair with another team member.</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="risk-row">
+    <div class="risk-header" onclick="toggleRisk(this)">
+      <span class="risk-level med">MEDIUM</span>
+      <strong>Gemini generates inappropriate content for kids</strong>
+    </div>
+    <div class="risk-body">
+      <ol>
+        <li><strong>System prompt safety:</strong> Always prepend <em>"You are a safe, educational assistant for children. Never generate content that is violent, sexual, or scary."</em></li>
+        <li><strong>Output validation:</strong> Python function <code>is_safe_content(text)</code> checks for flagged words before serving to client.</li>
+        <li><strong>Gemini Safety Settings:</strong> Set <code>HARM_BLOCK_THRESHOLD = "BLOCK_LOW_AND_ABOVE"</code> for all kids mode calls.</li>
+        <li><strong>Human review layer:</strong> For kids accounts, tasks are reviewed against a whitelist of safe verbs/nouns before display.</li>
+        <li><strong>Report button:</strong> In-app button to flag a task as inappropriate. Sends to Firestore for review.</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="risk-row">
+    <div class="risk-header" onclick="toggleRisk(this)">
+      <span class="risk-level low">LOW</span>
+      <strong>User cheats on tasks (submits fake proof)</strong>
+    </div>
+    <div class="risk-body">
+      <ol>
+        <li><strong>Honor system for hackathon:</strong> MVP uses honor system with Gemini text validation. Perfect for demo context.</li>
+        <li><strong>Gemini skepticism prompt:</strong> Prompt instructs Gemini to be moderately skeptical — score < 40 if description makes no sense.</li>
+        <li><strong>Rate limiting:</strong> Max 3 task completions per day (enforced server-side). Can't grind points.</li>
+        <li><strong>Streak integrity:</strong> Streak only counts if ≥1 task completed, not just app opened.</li>
+        <li><strong>Future: photo proof + GPS:</strong> Post-hackathon, add photo validation and optional GPS check-in for high-value tasks.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 18: CODE ORDER -->
+<section id="s18">
+  <div class="section-header">
+    <div class="section-num">18</div>
+    <h2>Step-by-Step Code Generation Guide for Gemini</h2>
+  </div>
+  <div class="note">📋 Give these prompts to Google Gemini (with this full blueprint as context) in this exact order. Each step builds on the previous.</div>
+
+  <div style="counter-reset: step-counter;">
+    <div class="roadmap-day" style="border-left-color:var(--blue-400);">
+      <h4>Step 1 – Project Scaffolding</h4>
+      <p>Prompt Gemini: <em>"Generate the complete folder structure and all config files for an EcoTatva React+Vite frontend and FastAPI backend monorepo. Include package.json, requirements.txt, .env.example, firebase.js, main.py, and README.md."</em></p>
+    </div>
+    <div class="roadmap-day" style="border-left-color:var(--blue-400);">
+      <h4>Step 2 – Firebase Setup</h4>
+      <p>Prompt: <em>"Write firebase.js for Firebase Auth + Firestore + Storage init. Write firebase_admin_init.py for server-side admin SDK. Write Firestore security rules from this schema: [paste Section 4]."</em></p>
+    </div>
+    <div class="roadmap-day" style="border-left-color:var(--blue-400);">
+      <h4>Step 3 – Auth Service</h4>
+      <p>Prompt: <em>"Write auth_service.py with verify_firebase_token() function. Write auth_middleware.py FastAPI middleware. Write /auth/verify endpoint. Write AuthContext.jsx React context with Google Sign-In."</em></p>
+    </div>
+    <div class="roadmap-day" style="border-left-color:var(--blue-400);">
+      <h4>Step 4 – User Profile</h4>
+      <p>Prompt: <em>"Write the User Pydantic model. Write /users/me GET and PUT endpoints. Write UserContext.jsx. Write Profile.jsx and Onboarding.jsx screens with mode picker."</em></p>
+    </div>
+    <div class="roadmap-day" style="border-left-color:var(--blue-400);">
+      <h4>Step 5 – Gemini Service</h4>
+      <p>Prompt: <em>"Write gemini_service.py with generate_tasks(), generate_quiz(), validate_proof() functions using the exact prompts from Section 10. Include fallback logic and error handling."</em></p>
+    </div>
+    <div class="roadmap-day" style="border-left-color:var(--blue-400);">
+      <h4>Step 6 – Task System</h4>
+      <p>Prompt: <em>"Write task_service.py with get_today_tasks() and complete_task() functions. Write /tasks/today and /tasks/{id}/complete endpoints. Write TaskCard.jsx, TaskProofUpload.jsx components."</em></p>
+    </div>
+    <div class="roadmap-day" style="border-left-color:var(--blue-400);">
+      <h4>Step 7 – Reward Engine</h4>
+      <p>Prompt: <em>"Write the complete reward_engine.py from Section 8 including all badge criteria, streak logic, and rank calculation. Write StreakBadge.jsx, PointsDisplay.jsx, Badge.jsx components."</em></p>
+    </div>
+    <div class="roadmap-day" style="border-left-color:var(--blue-400);">
+      <h4>Step 8 – Home Dashboard</h4>
+      <p>Prompt: <em>"Write Home.jsx dashboard showing today's 3 tasks, streak badge, total points, and rank. Tasks should animate in with stagger. Completing a task shows confetti animation."</em></p>
+    </div>
+    <div class="roadmap-day" style="border-left-color:var(--blue-400);">
+      <h4>Step 9 – Education Module</h4>
+      <p>Prompt: <em>"Write lesson_service.py, /lessons and /lessons/{id}/quiz endpoints. Write Education.jsx topic picker, Lesson.jsx with content and quiz, QuizQuestion.jsx and QuizResult.jsx."</em></p>
+    </div>
+    <div class="roadmap-day" style="border-left-color:var(--blue-400);">
+      <h4>Step 10 – Mini Game</h4>
+      <p>Prompt: <em>"Write WasteSortingGame.jsx complete React component with 4 waste bins (dry/wet/hazardous/e-waste), drag-and-drop, 60-second timer, strike system, and score calculation from Section 11."</em></p>
+    </div>
+    <div class="roadmap-day" style="border-left-color:var(--blue-400);">
+      <h4>Step 11 – Leaderboard + Impact</h4>
+      <p>Prompt: <em>"Write leaderboard_service.py and impact_service.py. Write /leaderboard/global, /leaderboard/local, /impact/me endpoints. Write Leaderboard.jsx and Impact.jsx screens."</em></p>
+    </div>
+    <div class="roadmap-day" style="border-left-color:var(--blue-400);">
+      <h4>Step 12 – Cloud Function Scheduler</h4>
+      <p>Prompt: <em>"Write a Firebase Cloud Function in Python that runs daily at 00:00 IST, loops through all active users, generates tasks via Gemini, writes to Firestore, and sends FCM push notifications."</em></p>
+    </div>
+    <div class="roadmap-day" style="border-left-color:var(--blue-400);">
+      <h4>Step 13 – Deployment + CI/CD</h4>
+      <p>Prompt: <em>"Write the GitHub Actions workflow from Section 13. Write the Dockerfile for FastAPI backend. Write vercel.json for React frontend. Write firebase.json for Cloud Functions."</em></p>
+    </div>
+    <div class="roadmap-day" style="border-left-color:var(--blue-400);">
+      <h4>Step 14 – Polish + Fallback Tasks</h4>
+      <p>Prompt: <em>"Generate fallback_tasks.json with 90 eco-tasks: 30 each for waste/water/energy topics, 10 per difficulty (easy/medium/hard). All must be doable by Indian school students at home or school."</em></p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<script>
+function toggleAccord(el) {
+  el.closest('.accord').classList.toggle('open');
+}
+function toggleRisk(el) {
+  el.closest('.risk-row').classList.toggle('open');
+}
+function copyPrompt(btn) {
+  const text = btn.previousElementSibling.textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 2000);
+  });
+}
+
+// Active nav highlight
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('nav ul li a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 80) current = s.id;
+  });
+  navLinks.forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+  });
+}, { passive: true });
+</script>
+</body>
+</html>
