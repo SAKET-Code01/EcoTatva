@@ -6,6 +6,7 @@ import { TaskProvider } from './context/TaskContext';
 import PageWrapper from './components/layout/PageWrapper';
 import Dashboard from './pages/Dashboard';
 import Tasks from './pages/Tasks';
+import Events from './pages/Events';
 import Login from './pages/Login';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -42,6 +43,7 @@ function App() {
                   </ProtectedRoute>
                 }
               />
+              <Route path="/events" element={<PageWrapper><Events /></PageWrapper>} />
             </Routes>
           </Router>
         </TaskProvider>
