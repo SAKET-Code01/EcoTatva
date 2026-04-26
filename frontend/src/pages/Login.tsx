@@ -1,9 +1,18 @@
 import React, { useState } from 'react';
 import { Leaf, Mail, Lock, Loader2 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 const Login = () => {
-  const { loginWithGoogle, loginWithEmail, signupWithEmail } = useAuth();
+  const { currentUser, loginWithGoogle, loginWithEmail, signupWithEmail } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (currentUser) {
+      navigate('/', { replace: true });
+    }
+  }, [currentUser, navigate]);
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
