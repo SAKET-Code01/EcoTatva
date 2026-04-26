@@ -8,6 +8,7 @@ import Dashboard from './pages/Dashboard';
 import Tasks from './pages/Tasks';
 import Events from './pages/Events';
 import Learn from './pages/Learn';
+import Articles from './pages/Articles';
 import Login from './pages/Login';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -46,6 +47,7 @@ function App() {
               />
               <Route path="/events" element={<PageWrapper><Events /></PageWrapper>} />
               <Route path="/learn" element={<PageWrapper><Learn /></PageWrapper>} />
+              <Route path="/articles" element={<PageWrapper><Articles /></PageWrapper>} />
             </Routes>
           </Router>
         </TaskProvider>
