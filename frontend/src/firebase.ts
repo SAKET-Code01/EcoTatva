@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
+import { getAuth, GoogleAuthProvider } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
@@ -11,11 +11,8 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
-// DEBUG LOG - This will help us see what is actually being used
-console.log('🔥 Firebase Config Loaded:');
-console.log('API Key:', firebaseConfig.apiKey ? '✅ PRESENT' : '❌ MISSING');
-console.log('Project ID:', firebaseConfig.projectId);
-
 const app = initializeApp(firebaseConfig);
+
 export const auth = getAuth(app);
 export const db = getFirestore(app);
+export const googleProvider = new GoogleAuthProvider();
