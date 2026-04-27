@@ -1,7 +1,12 @@
-import { Bell, Search, ChevronDown, Flame } from 'lucide-react';
+import { Bell, Search, ChevronDown, Flame, Menu } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
-const TopHeader = () => {
+interface TopHeaderProps {
+  isSidebarOpen: boolean;
+  toggleSidebar: () => void;
+}
+
+const TopHeader = ({ isSidebarOpen, toggleSidebar }: TopHeaderProps) => {
   const { currentUser } = useAuth();
 
   const displayName =
@@ -18,6 +23,15 @@ const TopHeader = () => {
 
   return (
     <header className="sticky top-0 z-30 h-16 bg-white border-b border-gray-100 flex items-center px-6 gap-4 flex-shrink-0">
+
+      {/* Hamburger - only on mobile */}
+      <button
+        onClick={toggleSidebar}
+        className="lg:hidden p-2 hover:bg-gray-100 rounded-xl transition-colors"
+        aria-label="Toggle Sidebar"
+      >
+        <Menu size={24} />
+      </button>
 
       {/* ── Search ────────────────────────── */}
       <div className="flex-1 max-w-sm">
