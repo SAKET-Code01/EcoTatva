@@ -10,6 +10,7 @@ import Events from './pages/Events';
 import Learn from './pages/Learn';
 import Articles from './pages/Articles';
 import Games from './pages/Games';
+import Profile from './pages/Profile';
 import Login from './pages/Login';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -26,29 +27,16 @@ function App() {
           <Router>
             <Routes>
               <Route path="/login" element={<Login />} />
-              <Route
-                path="/"
-                element={
-                  <ProtectedRoute>
-                    <PageWrapper>
-                      <Dashboard />
-                    </PageWrapper>
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/tasks"
-                element={
-                  <ProtectedRoute>
-                    <PageWrapper>
-                      <Tasks />
-                    </PageWrapper>
-                  </ProtectedRoute>
-                }
-              />
-              <Route path="/events" element={<PageWrapper><Events /></PageWrapper>} />
-              <Route path="/learn" element={<PageWrapper><Learn /></PageWrapper>} />
-              <Route path="/articles" element={<PageWrapper><Articles /></PageWrapper>} />
+              <Route element={<ProtectedRoute />}>
+                <Route element={<PageWrapper />}>
+                  <Route path="/" element={<Dashboard />} />
+                  <Route path="/tasks" element={<Tasks />} />
+                  <Route path="/events" element={<Events />} />
+                  <Route path="/learn" element={<Learn />} />
+                  <Route path="/articles" element={<Articles />} />
+                  <Route path="/profile" element={<Profile />} />
+                </Route>
+              </Route>
               <Route path="/games" element={<Games />} />
             </Routes>
           </Router>
