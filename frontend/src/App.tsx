@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { UserProvider } from './context/UserContext';
 import { TaskProvider } from './context/TaskContext';
@@ -13,10 +13,11 @@ import Games from './pages/Games';
 import Profile from './pages/Profile';
 import Login from './pages/Login';
 
-function ProtectedRoute({ children }: { children: React.ReactNode }) {
+function ProtectedRoute({ children }: { children?: React.ReactNode }) {
   const { currentUser, loading } = useAuth();
   if (loading) return <div className="flex items-center justify-center h-screen text-green-600">Loading...</div>;
-  return currentUser ? <>{children}</> : <Navigate to="/login" replace />;
+  if (!currentUser) return <Navigate to="/login" replace />;
+  return children ? <>{children}</> : <Outlet />;
 }
 
 function App() {
