@@ -1,23 +1,22 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate, Outlet } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { UserProvider } from './context/UserContext';
 import { TaskProvider } from './context/TaskContext';
 import PageWrapper from './components/layout/PageWrapper';
+import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Tasks from './pages/Tasks';
 import Events from './pages/Events';
 import Learn from './pages/Learn';
 import Articles from './pages/Articles';
-import Games from './pages/Games';
 import Profile from './pages/Profile';
-import Login from './pages/Login';
+import Games from './pages/Games';
 
-function ProtectedRoute({ children }: { children?: React.ReactNode }) {
+function ProtectedRoute() {
   const { currentUser, loading } = useAuth();
   if (loading) return <div className="flex items-center justify-center h-screen text-green-600">Loading...</div>;
-  if (!currentUser) return <Navigate to="/login" replace />;
-  return children ? <>{children}</> : <Outlet />;
+  return currentUser ? <Outlet /> : <Navigate to="/login" replace />;
 }
 
 function App() {
@@ -25,10 +24,14 @@ function App() {
     <AuthProvider>
       <UserProvider>
         <TaskProvider>
-          <Router>
+          <BrowserRouter>
             <Routes>
+              {/* Public Route */}
               <Route path="/login" element={<Login />} />
+
+              {/* Protected Routes */}
               <Route element={<ProtectedRoute />}>
+                {/* All normal pages use PageWrapper (sidebar + header) */}
                 <Route element={<PageWrapper />}>
                   <Route path="/" element={<Dashboard />} />
                   <Route path="/tasks" element={<Tasks />} />
@@ -37,10 +40,15 @@ function App() {
                   <Route path="/articles" element={<Articles />} />
                   <Route path="/profile" element={<Profile />} />
                 </Route>
+
+                {/* Games is full-screen and stays OUTSIDE PageWrapper */}
+                <Route path="/games" element={<Games />} />
               </Route>
-              <Route path="/games" element={<Games />} />
+
+              {/* Fallback */}
+              <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
-          </Router>
+          </BrowserRouter>
         </TaskProvider>
       </UserProvider>
     </AuthProvider>
