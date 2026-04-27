@@ -1,19 +1,15 @@
-import type { ReactNode } from 'react';
+import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import TopHeader from './TopHeader';
 
-interface PageWrapperProps {
-  children: ReactNode;
-}
-
-const PageWrapper = ({ children }: PageWrapperProps) => {
+const PageWrapper = () => {
   return (
-    <div className="flex min-h-screen bg-[#f7f9f7]">
+    <div className="flex min-h-screen bg-[#f8fdf9]">
       <Sidebar />
-      <div className="flex flex-col flex-1 ml-[230px] min-h-screen">
+      <div className="flex-1 flex flex-col min-w-0">
         <TopHeader />
-        <main className="flex-1 p-6 overflow-y-auto">
-          {children}
+        <main className="flex-1 p-6 overflow-auto">
+          <Outlet />
         </main>
       </div>
     </div>
