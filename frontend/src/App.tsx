@@ -12,6 +12,8 @@ import Learn from './pages/Learn';
 import Articles from './pages/Articles';
 import Profile from './pages/Profile';
 import Games from './pages/Games';
+import Community from './pages/Community';
+
 
 function ProtectedRoute() {
   const { currentUser, loading } = useAuth();
@@ -39,6 +41,8 @@ function App() {
                   <Route path="/learn" element={<Learn />} />
                   <Route path="/articles" element={<Articles />} />
                   <Route path="/profile" element={<Profile />} />
+                  <Route path="/community" element={<Community />} />
+
                 </Route>
 
                 {/* Games is full-screen and stays OUTSIDE PageWrapper */}
